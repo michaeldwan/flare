@@ -11,13 +11,13 @@ module Flare
 
     def search_for_ids(query = {})
       query = prepare_query(query)
-      response = Search.execute(query)
+      response = execute(query)
       Flare::Collection.ids_from_response(response, query[:page], query[:per_page], query)
     end
 
     def search(query = {})
       query = prepare_query(query)
-      response = Search.execute(query)
+      response = execute(query)
       Flare::Collection.create_from_response(response, query[:page], query[:per_page], query)
     end
 
@@ -73,7 +73,7 @@ module Flare
         rows = query[:per_page]
         field_query = query[:fields]
 
-        ActiveRecord::Base.debug("\e[4;32mSolr Query:\e[0;1m #{raw_query}, sort: #{query[:order]} start: #{start}, rows: #{rows}")
+        ::ActiveRecord::Base.logger.debug("\e[4;32mSolr Query:\e[0;1m #{raw_query}, sort: #{query[:order]} start: #{start}, rows: #{rows}")
 
         connection.select(:q => raw_query, :fl => field_query, :start => start, :rows => rows, :sort => query[:order])
       end
