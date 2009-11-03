@@ -63,6 +63,14 @@ module Flare
         def host
           @host ||= @config['host'] || '127.0.0.1'
         end
+
+        def path
+          @path ||= @config['path'] || 'solr'
+        end
+        
+        def url
+          @url ||= "http://#{host}:#{port}/#{path}"
+        end
       end
   end
 end
