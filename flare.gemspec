@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flare}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Dwan"]
-  s.date = %q{2009-11-02}
+  s.date = %q{2009-11-03}
   s.default_executable = %q{flare-solr}
   s.description = %q{This needs to get updated}
   s.email = %q{mpdwan@gmail.com}
@@ -26,8 +26,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "bin/flare-solr",
+     "flare.gemspec",
      "lib/flare.rb",
+     "lib/flare/active_record.rb",
+     "lib/flare/collection.rb",
      "lib/flare/configuration.rb",
+     "lib/flare/index_builder.rb",
+     "lib/flare/session.rb",
      "lib/flare/tasks.rb",
      "solr/etc/jetty.xml",
      "solr/etc/webdefault.xml",
