@@ -27,19 +27,25 @@ module Flare
     end
     
     module ClassMethods
-      def search_for_ids(query = {})
-        query[:types] = self
-        Flare.session.search_for_ids(query)
+      def search_for_ids(*args)
+        options = args.extract_options!
+        options[:types] ||= []
+        options[:types] << self
+        Flare.session.search_for_ids(*[args, options].flatten)
       end
 
-      def search(query = {})
-        query[:types] = self
-        Flare.session.search(query)
+      def search(*args)
+        options = args.extract_options!
+        options[:types] ||= []
+        options[:types] << self
+        Flare.session.search(*[args, options].flatten)
       end
 
-      def search_count(query = {})
-        query[:types] = self
-        Flare.session.count(query)
+      def search_count(*args)
+        options = args.extract_options!
+        options[:types] ||= []
+        options[:types] << self
+        Flare.session.count(*[args, options].flatten)
       end
       
       def searchable?
