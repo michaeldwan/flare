@@ -86,49 +86,7 @@ module Flare
           query["facet.mincount"] = @params[:facets][:mincount]
           query["facet.prefix"] = @params[:facets][:prefix]
           query["facet.offset"] = @params[:facets][:offset]
-
-          
-          #   hash["facet.field"] = []
-          #   hash["facet.query"] = @params[:facets][:queries]
-          #   hash["facet.sort"] = (@params[:facets][:sort] == :count) if @params[:facets][:sort]
-          
-        end
-        
-        
-        
-        
-        # # facet parameter processing
-        # if @params[:facets]
-        #   # TODO need validation of all that is under the :facets Hash too
-        #   hash[:facet] = true
-        #   hash["facet.field"] = []
-        #   hash["facet.query"] = @params[:facets][:queries]
-        #   hash["facet.sort"] = (@params[:facets][:sort] == :count) if @params[:facets][:sort]
-        #   hash["facet.limit"] = @params[:facets][:limit]
-        #   hash["facet.missing"] = @params[:facets][:missing]
-        #   hash["facet.mincount"] = @params[:facets][:mincount]
-        #   hash["facet.prefix"] = @params[:facets][:prefix]
-        #   hash["facet.offset"] = @params[:facets][:offset]
-        #   if @params[:facets][:fields]  # facet fields are optional (could be facet.query only)
-        #     @params[:facets][:fields].each do |f|
-        #       if f.kind_of? Hash
-        #         key = f.keys[0]
-        #         value = f[key]
-        #         hash["facet.field"] << key
-        #         hash["f.#{key}.facet.sort"] = (value[:sort] == :count) if value[:sort]
-        #         hash["f.#{key}.facet.limit"] = value[:limit]
-        #         hash["f.#{key}.facet.missing"] = value[:missing]
-        #         hash["f.#{key}.facet.mincount"] = value[:mincount]
-        #         hash["f.#{key}.facet.prefix"] = value[:prefix]
-        #         hash["f.#{key}.facet.offset"] = value[:offset]
-        #       else
-        #         hash["facet.field"] << f
-        #       end
-        #     end
-        #   end
-        # end
-        
-        
+        end        
         
         
         if options[:types]
@@ -141,27 +99,8 @@ module Flare
         response[:request] = query
         response[:request][:page] = options[:page]
         response[:request][:per_page] = options[:per_page]
-        puts response.inspect
         response
       end
-
-      # def execute(query)
-      #   query.assert_valid_keys(:terms, :types, :page, :per_page, :limit, :fields, :order)
-      # 
-      #   raw_query = "(#{query[:terms]})"
-      #   if query[:types]
-      #     raw_query << " AND (#{Array(query[:types]).map {|type| "type:#{type}"}.join(" OR ") })"
-      #   end
-      #   
-      #   start = (query[:page] -1) * query[:per_page]
-      #   rows = query[:per_page]
-      #   field_query = query[:fields]
-      # 
-      #   ::ActiveRecord::Base.logger.debug("\e[4;32mSolr Query:\e[0;1m #{raw_query}, sort: #{query[:order]} start: #{start}, rows: #{rows}")
-      # 
-      #   connection.select(:q => raw_query, :fl => field_query, :start => start, :rows => rows, :sort => query[:order])
-      # end
-
       
       def ensure_searchable(*objects)
         Array(objects).flatten.select { |object| object.class.searchable? }
