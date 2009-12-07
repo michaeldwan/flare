@@ -10,10 +10,11 @@ namespace :flare do
       port = Flare::Configuration.server.port 
       log_file = File.join(Flare::Configuration.server.log_dir, 'solr.log')
       log_level = Flare::Configuration.server.log_level
+      script_file = File.dirname(__FILE__) + '/../../bin/flare-solr'
 
       [data_dir, pid_dir].each { |path| FileUtils.mkdir_p(path) }
       
-      command = ['flare-solr', 'start', '-p', port.to_s, '-d', data_dir, '--pid-dir', pid_dir, '-l', log_level, '--log-file', log_file]
+      command = [script_file, 'start', '-p', port.to_s, '-d', data_dir, '--pid-dir', pid_dir, '-l', log_level, '--log-file', log_file]
       if solr_home
         command << '-s' << solr_home
       end
@@ -25,9 +26,10 @@ namespace :flare do
       data_path = Flare::Configuration.server.data_dir
       solr_home = Flare::Configuration.server.solr_home
       port = Flare::Configuration.server.port
-      
+      script_file = File.dirname(__FILE__) + '/../../bin/flare-solr'
+
       FileUtils.mkdir_p(data_path)
-      command = ['flare-solr', 'run', '-p', port.to_s, '-d', data_path]
+      command = [script_file, 'run', '-p', port.to_s, '-d', data_path]
       if solr_home
         command << '-s' << solr_home
       end
@@ -36,8 +38,10 @@ namespace :flare do
 
     desc 'Stop the Solr instance'
     task :stop => :environment do
+      script_file = File.dirname(__FILE__) + '/../../bin/flare-solr'
+
       FileUtils.cd(Flare::Configuration.server.pid_dir) do
-        system(Escape.shell_command(['flare-solr', 'stop']))
+        system(Escape.shell_command([script_file, 'stop']))
       end
     end
   end

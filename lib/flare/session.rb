@@ -79,7 +79,7 @@ module Flare
           query[:facets] = true
           query['facet.field'] = options[:facets][:fields]
           query['facet.query'] = options[:facets][:queries]
-          query['facet.mincount'] = options[:facets][:mincount]
+          query['facet.mincount'] = options[:facets][:mincount] || 1
           query["facet.limit"] = options[:facets][:limit]
           
           query["facet.missing"] = @params[:facets][:missing]
@@ -93,13 +93,22 @@ module Flare
           query[:fq] << Array(options[:types]).map {|type| "type:#{type}"}.join(" OR ")
         end
         
-        ::ActiveRecord::Base.logger.debug("\e[4;32mSolr Query:\e[0;1m #{query[:q].join(', ')} (#{query[:fq].join(' AND ')}), sort: #{query[:order]} start: #{query[:start]}, rows: #{query[:rows]}")
+        query[:q] = query.delete(:fq) if query[:q].blank?
+        
+        ::ActiveRecord::Base.logger.debug(<<-SOLR.squish)
+          \e[4;32mSolr Query:\e[0;1m 
+          #{query[:q].join(', ')} 
+          #{"(#{query[:fq].join(' AND ')})," if query[:fq] } 
+          sort: #{query[:order]} 
+          start: #{query[:start]}, 
+          rows: #{query[:rows]}
+        SOLR
 
         response = connection.select(query)
         response[:request] = query
         response[:request][:page] = options[:page]
         response[:request][:per_page] = options[:per_page]
-        response
+        response.with_indifferent_access
       end
       
       def ensure_searchable(*objects)
