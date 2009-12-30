@@ -66,9 +66,9 @@ module Flare
         })
 
         options.assert_valid_keys(:filter, :types, :page, :per_page, :limit, :fields, :order, :facet)
-        
-        args << '*:*' if args.empty?
-        
+
+        args << '*:*' if args.reject{|x| x.blank?}.empty?
+
         query = {
           :q => args,
           :fq => Array(options[:filter]).flatten,
