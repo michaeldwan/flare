@@ -5,15 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flare}
-  s.version = "0.0.1"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Dwan"]
-  s.date = %q{2009-11-03}
-  s.default_executable = %q{flare-solr}
+  s.date = %q{2009-12-30}
   s.description = %q{This needs to get updated}
   s.email = %q{mpdwan@gmail.com}
-  s.executables = ["flare-solr"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -25,7 +23,6 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "bin/flare-solr",
      "flare.gemspec",
      "lib/flare.rb",
      "lib/flare/active_record.rb",
@@ -34,28 +31,6 @@ Gem::Specification.new do |s|
      "lib/flare/index_builder.rb",
      "lib/flare/session.rb",
      "lib/flare/tasks.rb",
-     "solr/etc/jetty.xml",
-     "solr/etc/webdefault.xml",
-     "solr/lib/jetty-6.1.3.jar",
-     "solr/lib/jetty-util-6.1.3.jar",
-     "solr/lib/jsp-2.1/ant-1.6.5.jar",
-     "solr/lib/jsp-2.1/core-3.1.1.jar",
-     "solr/lib/jsp-2.1/jsp-2.1.jar",
-     "solr/lib/jsp-2.1/jsp-api-2.1.jar",
-     "solr/lib/servlet-api-2.5-6.1.3.jar",
-     "solr/solr/conf/elevate.xml",
-     "solr/solr/conf/protwords.txt",
-     "solr/solr/conf/schema.xml",
-     "solr/solr/conf/solrconfig.xml",
-     "solr/solr/conf/stopwords.txt",
-     "solr/solr/conf/synonyms.txt",
-     "solr/solr/lib/geoapi-nogenerics-2.1-M2.jar",
-     "solr/solr/lib/gt2-referencing-2.3.1.jar",
-     "solr/solr/lib/jsr108-0.01.jar",
-     "solr/solr/lib/locallucene.jar",
-     "solr/solr/lib/localsolr.jar",
-     "solr/start.jar",
-     "solr/webapps/solr.war",
      "test/helper.rb",
      "test/test_flare.rb"
   ]

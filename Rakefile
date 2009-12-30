@@ -5,7 +5,6 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "flare"
-    gem.executables= 'flare-solr'
     gem.summary = 'This needs to get updated'
     gem.description = 'This needs to get updated'
     gem.email = "mpdwan@gmail.com"
