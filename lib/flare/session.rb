@@ -67,6 +67,8 @@ module Flare
 
         options.assert_valid_keys(:filter, :types, :page, :per_page, :limit, :fields, :order, :facet)
         
+        args << '*:*' if args.empty?
+        
         query = {
           :q => args,
           :fq => Array(options[:filter]).flatten,
@@ -92,8 +94,6 @@ module Flare
         if options[:types]
           query[:fq] << Array(options[:types]).map {|type| "type:#{type}"}.join(" OR ")
         end
-        
-        query[:q] = query.delete(:fq) if query[:q].blank?
         
         ::ActiveRecord::Base.logger.debug(<<-SOLR.squish)
           \e[4;32mSolr Query:\e[0;1m 
