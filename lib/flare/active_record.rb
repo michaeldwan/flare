@@ -55,7 +55,7 @@ module Flare
       def rebuild_solr_index
         total = self.count
         count = 0
-        self.find_in_batches(:batch_size => 100) do |batch|
+        self.find_in_batches(:batch_size => 1000) do |batch|
           Flare.session.index(batch)
           count += batch.length
           printf "\r#{count}/#{total} complete"
