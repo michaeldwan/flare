@@ -25,7 +25,10 @@ module Flare
     
     def index(*objects)
       objects = ensure_searchable(objects)
-      connection.add(objects.collect(&:to_solr_doc))
+      objects.collect(&:to_solr_doc).each do |doc|
+        connection.update(RSolr::Message::Builder.new.add(doc[:fields], doc[:attributes]))
+        # connection.add(doc[:fields], doc[:attributes])
+      end
     end
     
     def index!(*objects)

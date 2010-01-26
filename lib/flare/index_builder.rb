@@ -4,11 +4,12 @@ module Flare
 
     def initialize(&block)
       @fields = []
+      @attributes = {}
       self.instance_eval(&block) if block_given?
     end
 
     def index
-      { :fields => @fields }
+      { :fields => @fields, :attributes => @attributes }
     end
 
     protected
@@ -19,6 +20,10 @@ module Flare
           :name => options[:as] || field, 
           :boost => options[:boost] || nil
           }
+      end
+      
+      def attribute(name, value)
+        @attributes[name] = value
       end
   end
 end

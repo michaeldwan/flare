@@ -73,7 +73,11 @@ module Flare
     
     module InstanceMethods
       def to_solr_doc
-        doc = { :id => solr_document_id, :type => self.class.name }
+        doc = {
+          :fields => { :id => solr_document_id, :type => self.class.name },
+          :attributes => {}
+        }
+
         solr_index[:fields].each do |field|
           value = send(field[:source])
           # Need to convert dates to utc xmlschema.
@@ -81,8 +85,13 @@ module Flare
           if value.respond_to?(:utc)
             value = value.utc.xmlschema
           end
-          doc[field[:name]] = value
+          doc[:fields][field[:name]] = value
         end
+        
+        solr_index[:attributes].each do |key, value|
+          doc[:attributes][key] = value.kind_of?(Symbol) ? send(value) : value
+        end
+        
         doc
       end
       
