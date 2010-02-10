@@ -22,5 +22,13 @@ module Flare
     def indexed_models
       @@indexed_models ||= []
     end
+    
+    def log(message)
+      if Object.const_defined?("ActiveRecord")
+        ::ActiveRecord::Base.logger.debug(message)
+      else
+        puts message
+      end
+    end
   end
 end

@@ -61,6 +61,8 @@ module Flare
       def execute(*args)
         options = args.extract_options!
         
+        options.assert_valid_keys(:q, :fq, :types, :page, :per_page, :limit, :fl, :sort, :facet)
+        
         options.reverse_merge!({
           :page => 1,
           :per_page => PER_PAGE,
@@ -68,29 +70,26 @@ module Flare
           :fields => '* score',
         })
 
-        options.assert_valid_keys(:filter, :types, :page, :per_page, :limit, :fields, :order, :facet)
-
-        args << '*:*' if args.reject{|x| x.blank?}.empty?
-
         query = {
-          :q => args,
-          :fq => Array(options[:filter]).flatten,
+          :q => Array(options[:q] || (args.blank? ? "*:*" : args)).flatten,
+          :fq => Array(options[:fq]).flatten,
           :fl => options[:fields],
           :start => start = (options[:page] -1) * options[:per_page],
-          :rows => options[:per_page]
+          :rows => options[:per_page],
+          :sort => options[:sort]
         }
         
-        if options[:facets]
-          query[:facets] = true
-          query['facet.field'] = options[:facets][:fields]
-          query['facet.query'] = options[:facets][:queries]
-          query['facet.mincount'] = options[:facets][:mincount] || 1
-          query["facet.limit"] = options[:facets][:limit]
+        if options[:facet]
+          query["facet"] = true
+          query["facet.field"] = options[:facet][:fields]
+          query["facet.query"] = options[:facet][:queries]
+          query["facet.mincount"] = options[:facet][:mincount] || 1
+          query["facet.limit"] = options[:facet][:limit]
           
-          query["facet.missing"] = @params[:facets][:missing]
-          query["facet.mincount"] = @params[:facets][:mincount]
-          query["facet.prefix"] = @params[:facets][:prefix]
-          query["facet.offset"] = @params[:facets][:offset]
+          query["facet.missing"] = @params[:facet][:missing]
+          query["facet.mincount"] = @params[:facet][:mincount]
+          query["facet.prefix"] = @params[:facet][:prefix]
+          query["facet.offset"] = @params[:facet][:offset]
         end        
         
         
@@ -98,11 +97,11 @@ module Flare
           query[:fq] << Array(options[:types]).map {|type| "type:#{type}"}.join(" OR ")
         end
         
-        ::ActiveRecord::Base.logger.debug(<<-SOLR.squish)
+        Flare.log(<<-SOLR.squish)
           \e[4;32mSolr Query:\e[0;1m 
           #{query[:q].join(', ')} 
           #{"(#{query[:fq].join(' AND ')})," if query[:fq] } 
-          sort: #{query[:order]} 
+          sort: #{query[:sort]} 
           start: #{query[:start]}, 
           rows: #{query[:rows]}
         SOLR
@@ -111,6 +110,7 @@ module Flare
         response[:request] = query
         response[:request][:page] = options[:page]
         response[:request][:per_page] = options[:per_page]
+
         response.with_indifferent_access
       end
       
