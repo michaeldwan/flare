@@ -61,7 +61,7 @@ module Flare
       def execute(*args)
         options = args.extract_options!
         
-        options.assert_valid_keys(:q, :fq, :types, :page, :per_page, :limit, :fl, :sort, :facet)
+        options.assert_valid_keys(:q, :fq, :types, :page, :per_page, :limit, :fl, :sort, :facet, :mlt)
         
         options.reverse_merge!({
           :page => 1,
