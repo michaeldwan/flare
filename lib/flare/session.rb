@@ -90,9 +90,13 @@ module Flare
           query["facet.mincount"] = @params[:facet][:mincount]
           query["facet.prefix"] = @params[:facet][:prefix]
           query["facet.offset"] = @params[:facet][:offset]
-        end        
+        end
         
-        
+        if options[:mlt]
+          query['mlt'] = true
+          query['mlt.fl'] = Array(options[:mlt][:fields]).flatten.join(',')
+        end
+
         if options[:types]
           query[:fq] << Array(options[:types]).map {|type| "type:#{type}"}.join(" OR ")
         end
