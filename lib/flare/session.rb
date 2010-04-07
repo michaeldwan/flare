@@ -3,20 +3,26 @@ module Flare
     RESULT_LIMIT = 1000
     PER_PAGE = 16
     
-    def connection
-      @connection ||= RSolr.connect(:url => Flare::Configuration.client.url)
+    def initialize(url)
+      @connection = RSolr.connect(:url => url)
     end
-
+    
+    attr_reader :connection
+    
     delegate :commit, :optimize, :to => :connection
 
     def search_for_ids(*args)
+      options = args.extract_options!
+      ar_options = { :include => options.delete(:include) }
       response = execute(*args)
       Flare::Collection.ids_from_response(response, response[:request][:page], response[:request][:per_page], response[:request])
     end
 
     def search(*args)
-      response = execute(*args)
-      Flare::Collection.create_from_response(response, response[:request][:page], response[:request][:per_page], response[:request])
+      options = args.extract_options!
+      ar_options = { :include => options.delete(:include) }
+      response = execute(options)
+      Flare::Collection.create_from_response(response, response[:request][:page], response[:request][:per_page], ar_options)
     end
 
     def count(*args)
@@ -26,6 +32,7 @@ module Flare
     def index(*objects)
       objects = ensure_searchable(objects)
       objects.collect(&:to_solr_doc).each do |doc|
+        # connection.update(RSolr::Message::Generator.new.add(doc[:fields], doc[:attributes]))
         connection.update(RSolr::Message::Builder.new.add(doc[:fields], doc[:attributes]))
         # connection.add(doc[:fields], doc[:attributes])
       end
@@ -90,11 +97,13 @@ module Flare
           query["facet.mincount"] = @params[:facet][:mincount]
           query["facet.prefix"] = @params[:facet][:prefix]
           query["facet.offset"] = @params[:facet][:offset]
+          query["facet.offset"] = 'count'
         end
         
         if options[:mlt]
           query['mlt'] = true
           query['mlt.fl'] = Array(options[:mlt][:fields]).flatten.join(',')
+          query['mlt.count'] = options[:mlt][:count] if options[:mlt][:count]
         end
 
         if options[:types]

@@ -15,4 +15,9 @@ namespace :flare do
     Flare.session.commit
     Flare.session.optimize
   end
+  
+  desc "Optimize the index"
+  task :optimize => :environment do
+    Flare.session.optimize
+  end
 end

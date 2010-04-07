@@ -7,7 +7,7 @@ rescue LoadError
   require 'rsolr'
 end
 
-%w(configuration collection index_builder session active_record).each do |file|
+%w(collection index_builder session active_record).each do |file|
   require File.join(File.dirname(__FILE__), 'flare', file)
 end
 
@@ -15,8 +15,17 @@ ActiveRecord::Base.send(:include, Flare::ActiveRecord)
 
 module Flare
   class << self
+
+    attr_reader :solr_url
+    
+    def solr=(value)
+      @session = Flare::Session.new(value)
+    end
+    
     def session
-      @session ||= Flare::Session.new
+      return @session if @session
+      self.solr = "http://127.0.0.1:8983/solr"
+      @session
     end
     
     def indexed_models

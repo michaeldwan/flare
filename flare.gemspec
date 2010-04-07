@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flare}
-  s.version = "1.4.1"
+  s.version = "1.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Dwan"]
-  s.date = %q{2010-02-15}
+  s.date = %q{2010-04-07}
   s.description = %q{This needs to get updated}
   s.email = %q{mpdwan@gmail.com}
   s.extra_rdoc_files = [
@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
      "lib/flare.rb",
      "lib/flare/active_record.rb",
      "lib/flare/collection.rb",
-     "lib/flare/configuration.rb",
      "lib/flare/index_builder.rb",
      "lib/flare/session.rb",
      "lib/flare/tasks.rb",
@@ -49,16 +48,16 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rsolr>, [">= 0.9.6"])
+      s.add_runtime_dependency(%q<rsolr>, ["= 0.11.0"])
       s.add_runtime_dependency(%q<escape>, [">= 0.0.4"])
       s.add_development_dependency(%q<thoughtbot-shoulda>, [">= 0"])
     else
-      s.add_dependency(%q<rsolr>, [">= 0.9.6"])
+      s.add_dependency(%q<rsolr>, ["= 0.11.0"])
       s.add_dependency(%q<escape>, [">= 0.0.4"])
       s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rsolr>, [">= 0.9.6"])
+    s.add_dependency(%q<rsolr>, ["= 0.11.0"])
     s.add_dependency(%q<escape>, [">= 0.0.4"])
     s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
   end

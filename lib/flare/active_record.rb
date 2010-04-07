@@ -29,6 +29,7 @@ module Flare
     module ClassMethods
       def search_for_ids(*args)
         options = args.extract_options!
+        options.except!(:include)
         options[:types] ||= []
         options[:types] << self
         Flare.session.search_for_ids(*[args, options].flatten)
@@ -43,6 +44,7 @@ module Flare
 
       def search_count(*args)
         options = args.extract_options!
+        options.except!(:include)
         options[:types] ||= []
         options[:types] << self
         Flare.session.count(*[args, options].flatten)
