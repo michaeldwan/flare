@@ -68,7 +68,7 @@ module Flare
       def execute(*args)
         options = args.extract_options!
         
-        options.assert_valid_keys(:q, :fq, :types, :page, :per_page, :limit, :fl, :sort, :facet, :mlt)
+        options.assert_valid_keys(:q, :fq, :types, :page, :per_page, :limit, :fl, :sort, :facet, :mlt, :mm)
         
         options.reverse_merge!({
           :page => 1,
@@ -104,6 +104,10 @@ module Flare
           query['mlt'] = true
           query['mlt.fl'] = Array(options[:mlt][:fields]).flatten.join(',')
           query['mlt.count'] = options[:mlt][:count] if options[:mlt][:count]
+        end
+        
+        if options[:mm]
+          query['mm'] = options[:mm]
         end
 
         if options[:types]
