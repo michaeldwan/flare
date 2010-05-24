@@ -14,14 +14,14 @@ module Flare
       options = args.extract_options!
       ar_options = { :include => options.delete(:include) }
       response = execute(*args)
-      Flare::Collection.ids_from_response(response, response[:request][:page], response[:request][:per_page], response[:request])
+      Flare::Collection.ids_from_response(response, response[:request][:start], response[:request][:rows], response[:request])
     end
 
     def search(*args)
       options = args.extract_options!
       ar_options = { :include => options.delete(:include) }
       response = execute(options)
-      Flare::Collection.create_from_response(response, response[:request][:page], response[:request][:per_page], ar_options)
+      Flare::Collection.create_from_response(response, response[:request][:start], response[:request][:rows], ar_options)
     end
 
     def count(*args)

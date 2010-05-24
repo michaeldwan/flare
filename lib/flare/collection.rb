@@ -3,9 +3,10 @@ module Flare
     attr_reader :total_entries, :total_pages, :current_page, :per_page
     attr_accessor :response
 
-    def initialize(page, per_page, total)
-      @current_page, @per_page, @total_entries = page, per_page, total
-      
+    def initialize(start, rows, total)
+      @current_page = (start / rows.to_f).floor + 1
+      @per_page = rows
+      @total_entries = total
       @total_pages = (@total_entries / @per_page.to_f).ceil
     end
     
